@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Breadcrumbs from './Breadcrumbs'
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
 export { Link }
@@ -24,6 +25,7 @@ export default function (config) {
                     <h3>Breadcrumbs</h3>
                     <Router basename={basename}>
                         <div>
+                            <Route component={router => <Breadcrumbs routeConfig={config} router={router}/>} />
                             {routes}
                         </div>
                     </Router>
@@ -41,7 +43,7 @@ function getRoutes(config, base = '') {
         const Component = desc.nested
             ? getNestedComponent(desc.component, desc.nested, url)
             : desc.component
-//        const subRoutes = desc.nested && getRoutes(config.nested)
+
         return <Route path={base + url} key={base + url} component={Component} />
     })
 }
