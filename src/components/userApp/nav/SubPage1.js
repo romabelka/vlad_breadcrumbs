@@ -12,6 +12,7 @@ class SubPage1 extends Component {
                 <section>
                     go to sub 2
                 </section>
+                {this.props.children}
             </div>
         )
     }

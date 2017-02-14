@@ -35,10 +35,20 @@ export default function (config) {
     return Navigation
 }
 
-function getRoutes(config) {
-    return Object.keys(config).map((key) => {
-        const desc = config[key]
+function getRoutes(config, base = '') {
+    return Object.keys(config).map((url) => {
+        const desc = config[url]
+        const Component = desc.nested
+            ? getNestedComponent(desc.component, desc.nested, url)
+            : desc.component
 //        const subRoutes = desc.nested && getRoutes(config.nested)
-        return <Route path={key} key={key} component={desc.component} />
+        return <Route path={base + url} key={base + url} component={Component} />
     })
+}
+
+function getNestedComponent(Component, config, base) {
+    const routes = getRoutes(config, base + '/')
+    return () => (<Component>
+        {routes}
+    </Component>)
 }

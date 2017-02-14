@@ -4,12 +4,18 @@ import Root from './components/userApp/Root'
 import Page1 from './components/userApp/Page1'
 import SubPage1 from './components/userApp/nav/SubPage1'
 import SubPage2 from './components/userApp/nav/SubPage2'
+import Nested1 from './components/userApp/nav/Nested1'
 
 import createNavigator from './components/navigation'
 
 const Navigator = createNavigator({
     '/sub1': {
-        component: SubPage1
+        component: SubPage1,
+        nested: {
+            'nested1': {
+                component: Nested1
+            }
+        }
     },
     '/sub2': {
         component: SubPage2
