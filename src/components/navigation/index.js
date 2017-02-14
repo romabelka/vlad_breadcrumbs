@@ -1,32 +1,44 @@
 import React, { Component, PropTypes } from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 
-import SubPage1 from '../app/nav/SubPage1'
+export { Link }
 
-class Navigation extends Component {
-    static propTypes = {
-        baseUrl: PropTypes.string
+export default function (config) {
+    const routes = getRoutes(config)
 
-    };
+    class Navigation extends Component {
+        static propTypes = {
+            baseUrl: PropTypes.string
+        };
 
-    static contextTypes = {
-        router: PropTypes.object
+        static contextTypes = {
+            router: PropTypes.object
+        }
+
+        render() {
+            const basename = this.props.baseUrl ||
+                (this.context.router && window.location.pathname.replace(this.context.router.params.splat, ''))
+
+            return (
+                <div>
+                    <h3>Breadcrumbs</h3>
+                    <Router basename={basename}>
+                        <div>
+                            {routes}
+                        </div>
+                    </Router>
+                </div>
+            )
+        }
     }
 
-    render() {
-        const baseName = this.props.baseUrl ||
-            (this.context.router && window.location.pathname.replace(this.context.router.params.splat, ''))
-        return (
-            <div>
-                <h3>Breadcrumbs</h3>
-                <Router basename={baseName}>
-                    <Route path="/sub1" component={SubPage1}/>
-                </Router>
-            </div>
-        )
-    }
+    return Navigation
 }
 
-
-
-export default Navigation
+function getRoutes(config) {
+    return Object.keys(config).map((key) => {
+        const desc = config[key]
+//        const subRoutes = desc.nested && getRoutes(config.nested)
+        return <Route path={key} key={key} component={desc.component} />
+    })
+}

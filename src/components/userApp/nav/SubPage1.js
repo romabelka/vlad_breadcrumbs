@@ -9,6 +9,9 @@ class SubPage1 extends Component {
         return (
             <div>
                 <h4>Sub page 1</h4>
+                <section>
+                    go to sub 2
+                </section>
             </div>
         )
     }
